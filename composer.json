@@ -4,14 +4,12 @@
         "psr-4": {
             "App\\": "app/",
             "Core\\": "core/"
-            
-
         }
     },
     "authors": [
         {
-            "name": "wiemsouissi-maker",
-            "email": "wiem.souissi@laplateforme.io"
+            "name": "Mickael-AY",
+            "email": "mickaelayilan@hotmail.com"
         }
     ],
     "require": {

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controllers;
 
 use Core\BaseController;
@@ -10,7 +11,7 @@ use Core\BaseController;
  * Hérite de BaseController afin de bénéficier des méthodes utilitaires
  * comme render() pour afficher les vues.
  */
-class HomeController extends BaseController
+class GameController extends BaseController
 {
     /**
      * Action principale (point d'entrée de la page d'accueil)
@@ -23,9 +24,8 @@ class HomeController extends BaseController
         // - Charge la vue "app/Views/home/index.php"
         // - Injecte le tableau de paramètres (ici, une variable $title utilisable dans la vue)
         // - Insère le contenu de la vue dans le layout global "base.php"
-        $this->render('home/index', [
-            'title' => 'GAME MEMORY',
+        $this->render('game/index', [
+            'title' => 'Page du jeu'
         ]);
     }
-
 }
