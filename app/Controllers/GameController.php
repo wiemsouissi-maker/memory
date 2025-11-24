@@ -42,12 +42,11 @@ class GameController extends BaseController
             foreach ($files as $file) {
                 if ($file === '.' || $file === '..') continue;
                 // On exclut l'image de fond et le dos de carte
-                if ($file === 'pexels-photo-3165335.jpeg') continue;
-                if ($file === 'images.jpg') continue;
-                if ($file === 'téléchargement (6).png') continue;
+                if ($file === 'background.jpg') continue;
+                if ($file === 'card-back.png') continue;
 
                 if (preg_match('/\.(jpg|jpeg|png|gif|webp)$/i', $file)) {
-                    $localImages[] = $baseUrl . '/assets/images/' . $file;
+                    $localImages[] = $baseUrl . '/assets/images/' . rawurlencode($file);
                 }
             }
         }

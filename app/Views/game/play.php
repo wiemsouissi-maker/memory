@@ -3,6 +3,7 @@
 <div id="game-info">
     <p>Paires trouvées : <span id="matched-pairs">0</span> / <?= count($cards) / 2 ?></p>
     <p>Nombre de coups : <span id="move-count">0</span></p>
+    <p>Temps : <span id="timer">00:00</span></p>
 </div>
 
 <div class="game-board">
@@ -25,13 +26,28 @@
         const cards = document.querySelectorAll('.card');
         const matchedPairsDisplay = document.getElementById('matched-pairs');
         const moveCountDisplay = document.getElementById('move-count');
+        const timerDisplay = document.getElementById('timer');
 
         let hasFlippedCard = false;
         let lockBoard = false;
         let firstCard, secondCard;
         let matchedPairs = 0;
         let moves = 0;
+        let timerInterval;
+        let startTime;
         const totalPairs = <?= count($cards) / 2 ?>;
+
+        function startTimer() {
+            startTime = Date.now();
+            timerInterval = setInterval(() => {
+                const elapsedTime = Math.floor((Date.now() - startTime) / 1000);
+                const minutes = Math.floor(elapsedTime / 60).toString().padStart(2, '0');
+                const seconds = (elapsedTime % 60).toString().padStart(2, '0');
+                timerDisplay.textContent = `${minutes}:${seconds}`;
+            }, 1000);
+        }
+
+        startTimer();
 
         function flipCard() {
             if (lockBoard) return;
@@ -75,8 +91,10 @@
             resetBoard();
 
             if (matchedPairs === totalPairs) {
+                clearInterval(timerInterval);
+                const finalTime = timerDisplay.textContent;
                 setTimeout(() => {
-                    alert(`Bravo ! Vous avez gagné en ${moves} coups.`);
+                    alert(`Bravo ! Vous avez gagné en ${moves} coups et ${finalTime}.`);
                     saveScore(moves);
                 }, 500);
             }
