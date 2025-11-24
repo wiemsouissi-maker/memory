@@ -1,4 +1,5 @@
 <?php
+
 namespace Core;
 
 /**
@@ -19,6 +20,14 @@ class BaseController
      */
     protected function render(string $view, array $params = []): void
     {
+        // Calcul de la base URL pour les liens
+        $baseUrl = dirname($_SERVER['SCRIPT_NAME']);
+        $baseUrl = str_replace('\\', '/', $baseUrl);
+        $baseUrl = rtrim($baseUrl, '/');
+
+        // On ajoute baseUrl aux paramètres
+        $params['baseUrl'] = $baseUrl;
+
         // Transforme les clés du tableau $params en variables utilisables directement dans la vue
         // Exemple : ['title' => 'Accueil'] devient $title = 'Accueil'
         extract($params, EXTR_SKIP);
@@ -36,5 +45,18 @@ class BaseController
 
         // Inclusion du layout de base, qui va utiliser la variable $content pour afficher la vue
         require __DIR__ . '/../app/Views/layouts/base.php';
+    }
+
+    /**
+     * Redirige vers une autre page en tenant compte du Base URL
+     */
+    protected function redirect(string $path): void
+    {
+        $baseUrl = dirname($_SERVER['SCRIPT_NAME']);
+        $baseUrl = str_replace('\\', '/', $baseUrl);
+        $baseUrl = rtrim($baseUrl, '/');
+
+        header('Location: ' . $baseUrl . $path);
+        exit;
     }
 }
