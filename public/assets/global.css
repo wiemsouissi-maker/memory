@@ -189,10 +189,10 @@ tr:hover {
 
 .game-board {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
     gap: 20px;
     justify-content: center;
-    max-width: 1000px;
+    max-width: 1200px;
     margin: 0 auto;
 }
 
@@ -241,7 +241,7 @@ tr:hover {
 }
 
 .card-back {
-    background-image: url('images/images.jpg');
+    background-image: url('images/téléchargement (6).png');
     background-size: cover;
     background-position: center;
     border: 2px solid var(--primary-color);

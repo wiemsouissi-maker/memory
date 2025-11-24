@@ -28,63 +28,64 @@ class GameController extends BaseController
      */
     public function start()
     {
-        $pairCount = (int)($_POST['pair_count'] ?? 6);
-        if ($pairCount < 3 || $pairCount > 12) {
-            $pairCount = 6; // Valeur par défaut sécurisée
+        // Calcul du Base URL pour les images locales
+        $baseUrl = dirname($_SERVER['SCRIPT_NAME']);
+        $baseUrl = str_replace('\\', '/', $baseUrl);
+        $baseUrl = rtrim($baseUrl, '/');
+
+        // Récupération des images locales
+        $directory = __DIR__ . '/../../public/assets/images';
+        $localImages = [];
+
+        if (is_dir($directory)) {
+            $files = scandir($directory);
+            foreach ($files as $file) {
+                if ($file === '.' || $file === '..') continue;
+                // On exclut l'image de fond et le dos de carte
+                if ($file === 'pexels-photo-3165335.jpeg') continue;
+                if ($file === 'images.jpg') continue;
+                if ($file === 'téléchargement (6).png') continue;
+
+                if (preg_match('/\.(jpg|jpeg|png|gif|webp)$/i', $file)) {
+                    $localImages[] = $baseUrl . '/assets/images/' . $file;
+                }
+            }
         }
 
-        // Stocker le nombre de paires en session pour la sauvegarde du score
+        // Détermination du nombre max de paires possibles
+        $maxPairs = count($localImages);
+
+        $pairCount = (int)($_POST['pair_count'] ?? 6);
+
+        // Si on a des images locales, on adapte la limite max
+        $limitMax = $maxPairs > 0 ? $maxPairs : 12;
+
+        if ($pairCount < 3) $pairCount = 3;
+        if ($pairCount > $limitMax) $pairCount = $limitMax;
+
+        // Stocker le nombre de paires en session
         $_SESSION['pair_count'] = $pairCount;
 
-        // Sélectionner des images au hasard via Picsum
         $selectedImages = [];
 
-        // Liste d'IDs d'images Picsum valides pour garantir l'affichage
-        $imageIds = [
-            10,
-            11,
-            12,
-            13,
-            14,
-            15,
-            16,
-            17,
-            18,
-            19,
-            20,
-            21,
-            22,
-            23,
-            24,
-            25,
-            28,
-            29,
-            30,
-            31,
-            40,
-            41,
-            42,
-            43,
-            44,
-            45,
-            46,
-            47,
-            48,
-            49
-        ];
-        shuffle($imageIds); // Mélange pour varier les parties
-
-        for ($i = 0; $i < $pairCount; $i++) {
-            // On prend un ID unique pour chaque paire
-            $id = $imageIds[$i];
-            $selectedImages[] = "https://picsum.photos/id/$id/200/200";
+        if ($maxPairs >= $pairCount) {
+            // Utilisation des images locales
+            shuffle($localImages);
+            $selectedImages = array_slice($localImages, 0, $pairCount);
+        } else {
+            // Fallback sur Picsum si pas assez d'images locales
+            $imageIds = [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 28, 29, 30, 31, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49];
+            shuffle($imageIds);
+            for ($i = 0; $i < $pairCount; $i++) {
+                $id = $imageIds[$i];
+                $selectedImages[] = "https://picsum.photos/id/$id/200/200";
+            }
         }
 
         $cards = [];
         $cardId = 0;
         foreach ($selectedImages as $imagePath) {
-            $value = $imagePath; // La valeur est l'URL de l'image
-            // Crée deux cartes pour chaque image pour former une paire
+            $value = $imagePath;
             $cards[] = new Card($cardId++, $value, $imagePath);
             $cards[] = new Card($cardId++, $value, $imagePath);
         }
