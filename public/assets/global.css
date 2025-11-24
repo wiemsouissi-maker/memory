@@ -241,7 +241,9 @@ tr:hover {
 }
 
 .card-back {
-    background: linear-gradient(135deg, #2c2c2c, #1a1a1a);
+    background-image: url('images/images.jpg');
+    background-size: cover;
+    background-position: center;
     border: 2px solid var(--primary-color);
     color: var(--primary-color);
     font-size: 2rem;
@@ -249,8 +251,7 @@ tr:hover {
 }
 
 .card-back::after {
-    content: '?';
-    text-shadow: 0 0 10px var(--primary-color);
+    content: '';
 }
 
 /* UTILITAIRES */
