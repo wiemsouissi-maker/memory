@@ -8,12 +8,12 @@
  */
 ?>
 <div class="text-center">
-  <h1>Bienvenue sur Memory</h1>
+  <h1>🎮Bienvenue sur Memory🎮</h1>
   <p>Le jeu classique revisité.</p>
 
   <div class="flex-center">
     <div class="panel">
-      <h2>Memory</h2>
+      <h2>🫀Memory</h2>
       <p>Exercez votre mémoire en retrouvant toutes les paires de cartes.</p>
       <a href="<?= $baseUrl ?>/game" class="btn">Jouer au Memory</a>
     </div>
