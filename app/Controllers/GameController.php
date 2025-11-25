@@ -43,6 +43,7 @@ class GameController extends BaseController
                 if ($file === '.' || $file === '..') continue;
                 // On exclut l'image de fond et le dos de carte
                 if ($file === 'background.jpg') continue;
+                if ($file === 'card-back.jpg') continue;
                 if ($file === 'card-back.png') continue;
 
                 if (preg_match('/\.(jpg|jpeg|png|gif|webp)$/i', $file)) {
